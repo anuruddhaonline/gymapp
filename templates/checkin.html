@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+
+<html lang="eng">
+
+    <head>
+
+        <meta charset="UTF-8">
+        <title>Fitness Center</title>
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+
+        <link href="//maxcdn.bootstrapcdn.com/bootstrap/3.3.0/css/bootstrap.min.css" rel="stylesheet" id="bootstrap-css">
+        <script src="//code.jquery.com/jquery-1.11.1.min.js"></script>
+        <script src="//maxcdn.bootstrapcdn.com/bootstrap/3.3.0/js/bootstrap.min.js"></script>
+
+        <link href="{{ url_for('static', filename='css/test.css')}}" rel="stylesheet">
+        <script src="{{url_for('static', filename='js/test.js')}}"></script>
+
+        <link href="{{ url_for('static', filename='css/checkin.css')}}" rel="stylesheet">
+
+
+    </head>
+
+    <body>
+
+
+    <div class="modal-dialog" style="width: 450px; margin-top: 70px">
+			<div class="modal-content">
+
+                <div class="booth">
+			<video id="video" width="400" height="300" style="margin-left: -15px; margin-top: 30px;"></video>
+			<canvas id='canvas' width="400" height="300"></canvas>
+			<div id="cam-holder">
+
+			</div>
+
+		</div>
+
+
+                <!-- Begin # DIV Form -->
+                <div id="div-forms">
+
+                    <!-- Begin # Login Form -->
+                    <form action="" id="login-form" method="post">
+		                <div class="modal-body">
+				    		<div id="div-login-msg">
+                                <div id="icon-login-msg" class="glyphicon glyphicon-chevron-right"></div>
+                                <span id="text-login-msg">{{error}}</span>
+                            </div>
+				    		<input id="login_nic" name="nic" class="form-control" type="text" placeholder="NIC" value="{{request.form.nic}}" required>
+
+        		    	</div>
+				        <div class="modal-footer">
+                            <div>
+                                <button type="submit" class="btn btn-primary btn-lg btn-block">Check-In</button>
+                            </div>
+				        </div>
+                    </form>
+                    <!-- End # Login Form -->
+
+                </div>
+                <!-- End # DIV Form -->
+
+			</div>
+		</div>
+
+    </body>
+
+<script src="{{url_for('static', filename='js/camload.js')}}"></script>
+
+</html>

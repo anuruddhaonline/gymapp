@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+
+<html lang="eng">
+
+    <head>
+
+        <meta charset="UTF-8">
+        <title>Fitness Center</title>
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+
+        <link href="//maxcdn.bootstrapcdn.com/bootstrap/3.3.0/css/bootstrap.min.css" rel="stylesheet" id="bootstrap-css">
+        <script src="//code.jquery.com/jquery-1.11.1.min.js"></script>
+        <script src="//maxcdn.bootstrapcdn.com/bootstrap/3.3.0/js/bootstrap.min.js"></script>
+
+        <link href="{{ url_for('static', filename='css/test.css')}}" rel="stylesheet">
+        <link href="{{ url_for('static', filename='css/style.css')}}" rel="stylesheet">
+        <script src="{{url_for('static', filename='js/test.js')}}"></script>
+
+
+    </head>
+
+    <body>
+<div class="header-cont">
+
+        <div class="header-wrap">
+            <a href="/dash/">Register</a>
+            <a href="/checkin/">Check-In</a>
+            <a href="/settings/">Settings</a>
+        </div>
+
+
+
+		</div>
+
+    <div class="modal-dialog" style="margin-top: 90px;">
+			<div class="modal-content">
+				<div class="modal-header" align="center">
+					<img class="img-circle" id="img_logo" src="{{url_for('static', filename='images/logo200.png')}}">
+				</div>
+
+                <!-- Begin # DIV Form -->
+                <div id="div-forms">
+
+                    <!-- Begin # Login Form -->
+                    <form action="/settings/" id="login-form" method="post">
+		                <div class="modal-body">
+		    				<div id="div-register-msg">
+                                <div id="icon-register-msg" class="glyphicon glyphicon-chevron-right"></div>
+                                <span id="text-register-msg">{{error}}</span>
+                            </div>
+		    				<input id="register_username" class="form-control" type="text" name="name" placeholder="Name" required>
+
+                            <input id="register_email" class="form-control" type="text" name="email" placeholder="E-Mail" required>
+                            <input id="register_password" class="form-control" name="password" type="password" placeholder="Password" required>
+                            <input id="register_password_con" class="form-control" name="password_con" type="password" placeholder="Confirm Password" required>
+            			</div>
+		    		    <div class="modal-footer">
+                            <div>
+                                <button type="submit" class="btn btn-primary btn-lg btn-block">Register</button>
+                            </div>
+		    		    </div>
+                    </form>
+                    <!-- End # Login Form -->
+
+
+                </div>
+                <!-- End # DIV Form -->
+
+			</div>
+		</div>
+
+    </body>
+
+</html>

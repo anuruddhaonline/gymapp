@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+
+<html lang="eng">
+
+    <head>
+
+        <meta charset="UTF-8">
+        <title>Fitness Center</title>
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+
+        <link href="//maxcdn.bootstrapcdn.com/bootstrap/3.3.0/css/bootstrap.min.css" rel="stylesheet" id="bootstrap-css">
+        <script src="//code.jquery.com/jquery-1.11.1.min.js"></script>
+        <script src="//maxcdn.bootstrapcdn.com/bootstrap/3.3.0/js/bootstrap.min.js"></script>
+
+        <link href="{{ url_for('static', filename='css/test.css')}}" rel="stylesheet">
+        <script src="{{url_for('static', filename='js/test.js')}}"></script>
+
+
+    </head>
+
+    <body>
+
+
+    <div class="modal-dialog">
+			<div class="modal-content">
+				<div class="modal-header" align="center">
+					<img class="img-circle" id="img_logo" src="{{url_for('static', filename='images/logo200.png')}}">
+				</div>
+
+                <!-- Begin # DIV Form -->
+                <div id="div-forms">
+
+                    <!-- Begin # Login Form -->
+                    <form action="/" id="login-form" method="post">
+		                <div class="modal-body">
+				    		<div id="div-login-msg">
+                                <div id="icon-login-msg" class="glyphicon glyphicon-chevron-right"></div>
+                                <span id="text-login-msg">{{error}}</span>
+                            </div>
+				    		<input id="login_username" name="username" class="form-control" type="text" placeholder="Username" value="{{request.form.username}}" required>
+				    		<input id="login_password" name="password" class="form-control" type="password" placeholder="Password" value="{{request.form.password}}" required>
+                            <div class="checkbox">
+                                <label>
+                                    <input type="checkbox"> Remember me
+                                </label>
+                            </div>
+        		    	</div>
+				        <div class="modal-footer">
+                            <div>
+                                <button type="submit" class="btn btn-primary btn-lg btn-block">Login</button>
+                            </div>
+				    	    <div class="login-lost-div">
+                                <button id="login_lost_btn" type="button" class="btn btn-link">Lost Password?</button>
+                            </div>
+				        </div>
+                    </form>
+                    <!-- End # Login Form -->
+
+                    <!-- Begin | Lost Password Form -->
+                    <form id="lost-form" style="display:none;">
+    	    		    <div class="modal-body">
+		    				<div id="div-lost-msg">
+                                <div id="icon-lost-msg" class="glyphicon glyphicon-chevron-right"></div>
+                                <span id="text-lost-msg">Type your Email.</span>
+                            </div>
+		    				<input id="lost_email" class="form-control" type="text" placeholder="Email" required>
+            			</div>
+		    		    <div class="modal-footer">
+                            <div>
+                                <button type="submit" class="btn btn-primary btn-lg btn-block">Send</button>
+                            </div>
+                            <div class="back-to-login-div">
+                                <button id="lost_login_btn" type="button" class="btn btn-link">Log In</button>
+                            </div>
+		    		    </div>
+                    </form>
+                    <!-- End | Lost Password Form -->
+
+
+                </div>
+                <!-- End # DIV Form -->
+
+			</div>
+		</div>
+
+    </body>
+
+</html>
