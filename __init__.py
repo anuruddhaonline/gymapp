@@ -1,4 +1,4 @@
-from flask import Flask, render_template, flash, request, url_for, redirect, session
+from flask import Flask, render_template, flash, request, url_for, redirect, session ,make_response,jsonify
 from dbcon import Connection
 from passlib.hash import sha256_crypt
 from pymysql import escape_string as es
@@ -58,10 +58,31 @@ def dash():
     return render_template("register.html")
 
 
+#Checkin
+
 @app.route('/checkin/')
 def checkin():
+
     error = 'Please place Your face and press checkin'
     return render_template("checkin.html", error =error)
+
+    #
+    # email = "324324324V"  # Have to add request from username
+    #
+    # c, conn = Connection()
+    #
+    # c.execute("SELECT * FROM status WHERE email = (%s)", (es(email)))
+    #
+    # state = c.fetchone()[2]
+    #
+    # if state == False:
+    #
+    #  return redirect(url_for("dash"))
+    #
+    # else:
+
+
+#Settings
 
 @app.route('/settings/', methods=['GET', 'POST'])
 def settings():
@@ -113,6 +134,9 @@ def settings():
 
     return render_template("settings.html", error = error)
 
+
+# Login
+
 @app.route('/', methods=['GET', 'POST'])
 def index():
     error = 'Type your Username and Password.'
@@ -127,8 +151,6 @@ def index():
             if sha256_crypt.verify(request.form['password'], data):
                 session['logged_in']  = True
                 session['email'] = request.form['username']
-
-                return redirect(url_for("dash"))
 
 
             else:
@@ -148,41 +170,52 @@ def index():
         return render_template("index.html", error = error)
 
 
+@app.route('/getfilldetail', methods=['POST'])
 
-# New Codes
+def getfillDetail():
+
+
+    # nic = "324324324V" # Test
+
+    nic = request.form['nic']
+
+    out = []
+
+    c, conn = Connection()
+
+    c.execute("SELECT * FROM members WHERE nic = (%s)", (es(nic)))
+
+    result = c.fetchall()
+
+
+    for row in result:
+
+        out.append({'name': row[2], 'lname': row[3]})
+
+    conn.commit()
+    c.close()
+    conn.close()
+    gc.collect()
+
+    return jsonify(out=out)
+
+
 
 @app.route('/filldetail', methods=['GET'])
 
 def fillDetail():
 
-
-      # email = request.form['email']
-      #
-      # # return 'Here'
-      #
-      # c, conn = Connection()
-      #
-      # c.execute("SELECT * FROM members WHERE email = (%s)", (es(email)))
-      #
-      # name = c.fetchall()[2]
-      # lname = 'asdasd' #c.fetchone()[3]
-      # doj = '2018-01-01' #c.fetchone()[7]
-
-      nic = "951324844V"
-      name = 'test'
-      lname = 'test'
-      doj = '2018-01-01'
+    return render_template("insertDetails.html")
 
 
-      return render_template("insertDetails.html" , nic = nic , name = name , lname = lname , doj = doj )
+
+# Save Member Daily Details
 
 @app.route('/savedetail', methods=['POST'])
 
 def saveDetail():
 
     # return 'Yes'
-
-
 
     nic = request.form['nic']
     bodyWeight = request.form['weight']
@@ -208,11 +241,38 @@ def saveDetail():
 
     return 'Ok Done'
 
-@app.route('/myprogress', methods=['GET'])
 
-def myProgress():
+# Getting Progress Route for Charts
 
-    return render_template("progress.html")
+@app.route('/getprogress', methods=['POST'])
+
+def getProgress():
+
+    #nic = "951324844V" #Test
+
+    nic = request.form['nic']
+
+    out =[]
+
+    c, conn = Connection()
+
+    c.execute("SELECT * FROM memberprogress WHERE nic = (%s)", (es(nic)))
+
+    result = c.fetchall()
+
+    for row in result:
+
+        out.append({ 'weight' : row[1] , 'height' : row[2] , 'chest' : row[3] , 'fat' : row[4] , 'date' : row[6]})
+
+
+    conn.commit()
+    c.close()
+    conn.close()
+    gc.collect()
+
+    return jsonify(out=out)
+
+
 
 if __name__ == "__main__":
     app.run()

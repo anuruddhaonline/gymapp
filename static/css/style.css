@@ -90,10 +90,11 @@ input::-webkit-input-placeholder {
 /*cam view css*/
 
 .booth{
-				width: 600px;
-				background-color: #ccc;
-                border-radius: 25px;
-                margin: 0 auto;
+			    width: 600px;
+    background-color: #9479ff;
+    border-radius: 25px;
+    margin: 0 auto;
+    box-shadow: 0px 8px 0px #3e2b8a;
 			}
 			.booth-capture-button{
 				display: block;
@@ -133,6 +134,30 @@ input::-webkit-input-placeholder {
 				z-index: 10000;
 			}
 
+
+
+#capture{
+
+	text-transform: uppercase;
+    font-weight: 600;
+    font-size: 15px;
+    border-radius: 5px;
+    background-color: #0c5460;
+    box-shadow: 0px 6px 0px 0px #03333c;
+    border: none;
+}
+
+.header-wrap a{
+
+	text-transform: uppercase;
+    font-weight: 600;
+    font-size: 15px;
+    border-radius: 5px;
+    background-color: #0c5460;
+    box-shadow: 0px 6px 0px 0px #03333c;
+    border: none;
+}
+
 /*header css*/
 
 
@@ -149,17 +174,27 @@ input::-webkit-input-placeholder {
     text-align: center;
     padding: 40px;
 
+	padding-top: 70px;
+
 }
 
 .header-wrap a{
 
     padding: 20px;
     border-radius: 20px;
-    background-color: red;
+    background-color: #0c5460;
     margin-left: 20px;
     margin-right: 20px;
+	color: #ffffff;
+	text-decoration: none;
 
 }
+
+.header-wrap a:hover{
+
+	color: #84b5bd;
+}
+
 
 
 .login-button{
@@ -189,5 +224,12 @@ canvas{
   width:500px !important;
   height:300px !important;
 
+
 }
 
+.dhr {
+    height: 5px;
+    background-color: #0c546029;
+    margin-top: 25px;
+    margin-bottom: 60px;
+}
