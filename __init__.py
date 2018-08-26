@@ -208,6 +208,11 @@ def saveDetail():
 
     return 'Ok Done'
 
+@app.route('/myprogress', methods=['GET'])
+
+def myProgress():
+
+    return render_template("progress.html")
 
 if __name__ == "__main__":
     app.run()

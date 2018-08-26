@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+
+        <link href="//maxcdn.bootstrapcdn.com/bootstrap/3.3.0/css/bootstrap.min.css" rel="stylesheet" id="bootstrap-css">
+        <script src="//code.jquery.com/jquery-1.11.1.min.js"></script>
+        <script src="//maxcdn.bootstrapcdn.com/bootstrap/3.3.0/js/bootstrap.min.js"></script>
+
+
+		<meta name="viewport" content="width=device-width, initial-scale=1">
+
+		<!-- Website CSS style -->
+		<link href="{{ url_for('static', filename='css/style.css')}}" rel="stylesheet">
+
+		<!-- Website Font style -->
+	    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.6.1/css/font-awesome.min.css">
+
+		<!-- Google Fonts -->
+		<link href='https://fonts.googleapis.com/css?family=Passion+One' rel='stylesheet' type='text/css'>
+		<link href='https://fonts.googleapis.com/css?family=Oxygen' rel='stylesheet' type='text/css'>
+
+
+
+		<title>Register New Member</title>
+	</head>
+
+    <body>
+
+<div class="header-cont">
+
+    		</div>
+
+        <div class="container">
+
+			<span id="text-login-msg"></span>
+			<div class="row main">
+
+				<div class="main-login main-center">
+
+                    <div class="col-md-6">  <h2 class="cardHeading">My Progress : {{name}} {{lname}}</h2>  </div>
+
+                     <div class="col-md-6">  <h2 class="cardHeading">DOJ: {{DOJ}} </h2>  </div>
+
+
+
+                            <div class="col-md-12">
+							<button id="frmbtn" type="button" class="btn btn-primary btn-lg btn-block login-button">Back</button>
+
+                                </div>
+
+				</div>
+			</div>
+		</div>
+
+        </body>
+
+
+<script src="{{url_for('static', filename='js/camload.js')}}"></script>
+</html>
