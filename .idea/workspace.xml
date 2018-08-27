@@ -2,7 +2,7 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="dbcf8511-60ca-4b37-9fa8-48dea6c4d974" name="Default Changelist" comment="">
-      <change beforePath="$PROJECT_DIR$/app.py" beforeDir="false" afterPath="$PROJECT_DIR$/app.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/requirements.txt" beforeDir="false" afterPath="$PROJECT_DIR$/requirements.txt" afterDir="false" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
@@ -65,6 +65,7 @@
           <entry key="js" value="9" />
           <entry key="pstat" value="1" />
           <entry key="py" value="5" />
+          <entry key="txt" value="1" />
           <entry key="yml" value="1" />
         </counts>
       </usages-collector>
@@ -73,6 +74,7 @@
           <entry key="CSS" value="7" />
           <entry key="HTML" value="16" />
           <entry key="JavaScript" value="8" />
+          <entry key="PLAIN_TEXT" value="1" />
           <entry key="Profiler Session" value="1" />
           <entry key="Python" value="5" />
           <entry key="UML" value="2" />
@@ -104,7 +106,7 @@
   </component>
   <component name="FileEditorManager">
     <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
-      <file pinned="false" current-in-tab="true">
+      <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/app.py">
           <provider selected="true" editor-type-id="text-editor">
             <state relative-caret-position="161">
@@ -117,6 +119,15 @@
                 <marker date="1535390361530" expanded="true" signature="5778:5780" ph="..." />
                 <marker date="1535390361530" expanded="true" signature="6669:7823" ph="..." />
               </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/requirements.txt">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="18">
+              <caret line="1" column="17" selection-start-line="1" selection-start-column="17" selection-end-line="1" selection-end-column="17" />
             </state>
           </provider>
         </entry>
@@ -156,15 +167,6 @@
               <folding>
                 <element signature="n#!!block;n#weightCharts#0" />
               </folding>
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/static/css/style.css">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="3384">
-              <caret line="188" column="4" selection-start-line="188" selection-start-column="4" selection-end-line="188" selection-end-column="4" />
             </state>
           </provider>
         </entry>
@@ -260,6 +262,7 @@
         <option value="$PROJECT_DIR$/test.py" />
         <option value="$PROJECT_DIR$/.travis.yml" />
         <option value="$PROJECT_DIR$/app.py" />
+        <option value="$PROJECT_DIR$/requirements.txt" />
       </list>
     </option>
   </component>
@@ -741,6 +744,13 @@
             <marker date="1535390361530" expanded="true" signature="5778:5780" ph="..." />
             <marker date="1535390361530" expanded="true" signature="6669:7823" ph="..." />
           </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/requirements.txt">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="18">
+          <caret line="1" column="17" selection-start-line="1" selection-start-column="17" selection-end-line="1" selection-end-column="17" />
         </state>
       </provider>
     </entry>
