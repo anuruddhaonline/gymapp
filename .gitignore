@@ -84,5 +84,6 @@ env.bak/
 venv.bak/
 
 model/
+uploads/
 
 # End of https://www.gitignore.io/api/pycharm
