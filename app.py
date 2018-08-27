@@ -42,7 +42,7 @@ def dash():
 
                 c.execute("INSERT INTO members (nic, fname, lname, email, mobile, dob, weight, height, chest, password) VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s)",(es(nic), es(fname), es(lname), es(email), es(mobile), es(dob), es(weight),es(height), es(chest), es(password)))
 
-                #tes
+                #saves user images
 
                 target = os.path.join(APP_ROOT, 'uploads/'+nic)
                 print(target)
