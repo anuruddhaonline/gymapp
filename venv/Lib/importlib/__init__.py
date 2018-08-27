@@ -23,7 +23,7 @@ else:
     _bootstrap.__name__ = 'importlib._bootstrap'
     _bootstrap.__package__ = 'importlib'
     try:
-        _bootstrap.__file__ = __file__.replace('app.py', '_bootstrap.py')
+        _bootstrap.__file__ = __file__.replace('__init__.py', '_bootstrap.py')
     except NameError:
         # __file__ is not guaranteed to be defined, e.g. if this code gets
         # frozen by a tool like cx_Freeze.
@@ -40,7 +40,7 @@ else:
     _bootstrap_external.__name__ = 'importlib._bootstrap_external'
     _bootstrap_external.__package__ = 'importlib'
     try:
-        _bootstrap_external.__file__ = __file__.replace('app.py', '_bootstrap_external.py')
+        _bootstrap_external.__file__ = __file__.replace('__init__.py', '_bootstrap_external.py')
     except NameError:
         # __file__ is not guaranteed to be defined, e.g. if this code gets
         # frozen by a tool like cx_Freeze.
@@ -79,7 +79,8 @@ def find_loader(name, path=None):
     This function is deprecated in favor of importlib.util.find_spec().
 
     """
-    warnings.warn('Use importlib.util.find_spec() instead.',
+    warnings.warn('Deprecated since Python 3.4. '
+                  'Use importlib.util.find_spec() instead.',
                   DeprecationWarning, stacklevel=2)
     try:
         loader = sys.modules[name].__loader__
@@ -163,6 +164,8 @@ def reload(module):
             pkgpath = None
         target = module
         spec = module.__spec__ = _bootstrap._find_spec(name, pkgpath, target)
+        if spec is None:
+            raise ModuleNotFoundError(f"spec not found for the module {name!r}", name=name)
         _bootstrap._exec(spec, module)
         # The module may have replaced itself in sys.modules!
         return sys.modules[name]
