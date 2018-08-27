@@ -50,7 +50,7 @@
 
                     <div class="booth">
 			<video id="video" width="400" height="300" style="margin-left: 100px; margin-top: 30px;"></video>
-			<a href="#" id="capture" class="booth-capture-button">Capture Image</a>
+			<button id="capture" class="booth-capture-button">Capture Image</button>
 			<canvas id='canvas' width="400" height="300"></canvas>
 			<div id="cam-holder">
 
@@ -60,14 +60,14 @@
                     <div class="form-wrap">
 
                     <!--fhhfskdfj-->
-					<form class="form-horizontal" method="post" action="/dash/">
+					<form class="form-horizontal" method="post" id="regform" action="/dash/">
 
                         <div class="row">
 
 							<div class="col-md-6">
 								<div class="input-group">
 									<span class="input-group-addon"><i class="fa fa-user fa" aria-hidden="true"></i></span>
-									<input type="text" maxlength="10"  class="form-control" name="nic" id="nic"  placeholder="NIC" required/>
+									<input type="text" maxlength="10"  class="form-control" name="nic" id="nic"  placeholder="NIC" />
 								</div>
 							</div>
 
@@ -75,14 +75,14 @@
 							<div class="col-md-6">
 								<div class="input-group">
 									<span class="input-group-addon"><i class="fa fa-user fa" aria-hidden="true"></i></span>
-									<input type="text" class="form-control" name="fname" id="fname"  placeholder="First Name" required/>
+									<input type="text" class="form-control" name="fname" id="fname"  placeholder="First Name" />
 								</div>
 							</div>
 
 							<div class="col-md-6">
 								<div class="input-group">
 									<span class="input-group-addon"><i class="fa fa-user fa" aria-hidden="true"></i></span>
-									<input type="text" class="form-control" name="lname" id="lname"  placeholder="Last Name" required/>
+									<input type="text" class="form-control" name="lname" id="lname"  placeholder="Last Name" />
 								</div>
 							</div>
 
@@ -91,49 +91,49 @@
 							<div class="col-md-6">
 								<div class="input-group">
 									<span class="input-group-addon"><i class="fa fa-envelope fa" aria-hidden="true"></i></span>
-									<input type="email" class="form-control" name="email" id="email"  placeholder="Email" required/>
+									<input type="email" class="form-control" name="email" id="email"  placeholder="Email" />
 								</div>
 							</div>
 
 							<div class="col-md-6">
 								<div class="input-group">
 									<span class="input-group-addon"><i class="fa fa-envelope fa" aria-hidden="true"></i></span>
-									<input type="number" maxlength="10"  class="form-control" name="mobile" id="mobile"  placeholder="Mobile Number" required/>
+									<input type="number" maxlength="10"  class="form-control" name="mobile" id="mobile"  placeholder="Mobile Number" />
 								</div>
 							</div>
 
 							<div class="col-md-6">
 								<div class="input-group">
 									<span class="input-group-addon"><i class="fa fa-envelope fa" aria-hidden="true"></i></span>
-									<input type="date" class="form-control" name="dob" id="dob" min="1970-01-01"  required/>
+									<input type="date" class="form-control" name="dob" id="dob" min="1970-01-01"  />
 								</div>
 							</div>
 
 							<div class="col-md-6">
 								<div class="input-group">
 									<span class="input-group-addon"><i class="fa fa-envelope fa" aria-hidden="true"></i></span>
-									<input type="number" class="form-control" name="weight" id="weight"  placeholder="Weight" required/>
+									<input type="number" class="form-control" name="weight" id="weight"  placeholder="Weight" />
 								</div>
 							</div>
 
 							<div class="col-md-6">
 								<div class="input-group">
 									<span class="input-group-addon"><i class="fa fa-envelope fa" aria-hidden="true"></i></span>
-									<input type="number" class="form-control" name="height" id="height"  placeholder="Height" required/>
+									<input type="number" class="form-control" name="height" id="height"  placeholder="Height" />
 								</div>
 							</div>
 
 							<div class="col-md-6">
 								<div class="input-group">
 									<span class="input-group-addon"><i class="fa fa-envelope fa" aria-hidden="true"></i></span>
-									<input type="number" class="form-control" name="fat" id="fat"  placeholder="Fat" required/>
+									<input type="number" class="form-control" name="fat" id="fat"  placeholder="Fat" />
 								</div>
 							</div>
 
 							<div class="col-md-6">
 								<div class="input-group">
 									<span class="input-group-addon"><i class="fa fa-envelope fa" aria-hidden="true"></i></span>
-									<input type="number" class="form-control" name="chest" id="chest"  placeholder="Chest Size" required/>
+									<input type="number" class="form-control" name="chest" id="chest"  placeholder="Chest Size" />
 								</div>
 							</div>
 
@@ -142,7 +142,7 @@
 							<div class="col-md-6">
 								<div class="input-group">
 									<span class="input-group-addon"><i class="fa fa-lock fa-lg" aria-hidden="true"></i></span>
-									<input type="password" class="form-control" name="password" id="password"  placeholder="Password" required/>
+									<input type="password" class="form-control" name="password" id="password"  placeholder="Password" />
 								</div>
 							</div>
 
@@ -152,7 +152,7 @@
 							<div class="col-md-6">
 								<div class="input-group">
 									<span class="input-group-addon"><i class="fa fa-lock fa-lg" aria-hidden="true"></i></span>
-									<input type="password" class="form-control" name="confirm" id="confirm"  placeholder="Confirm Password" required/>
+									<input type="password" class="form-control" name="confirm" id="confirm"  placeholder="Confirm Password" />
 								</div>
 							</div>
 
@@ -174,4 +174,5 @@
 
 
 <script src="{{url_for('static', filename='js/camload.js')}}"></script>
+<!--<script src="{{url_for('static', filename='js/fileupload.js')}}"></script>-->
 </html>

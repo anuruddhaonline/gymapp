@@ -1,3 +1,4 @@
+import os
 from flask import Flask, render_template, flash, request, url_for, redirect, session ,make_response,jsonify
 from dbcon import Connection
 from passlib.hash import sha256_crypt
@@ -10,6 +11,7 @@ import datetime
 
 app = Flask(__name__)
 app.secret_key = "super secret key"
+APP_ROOT = os.path.dirname(os.path.abspath(__file__))
 
 @app.route('/dash/', methods=['GET', 'POST'])
 def dash():
@@ -39,6 +41,24 @@ def dash():
 
 
                 c.execute("INSERT INTO members (nic, fname, lname, email, mobile, dob, weight, height, chest, password) VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s)",(es(nic), es(fname), es(lname), es(email), es(mobile), es(dob), es(weight),es(height), es(chest), es(password)))
+
+                #tes
+
+                target = os.path.join(APP_ROOT, 'uploads/'+nic)
+                print(target)
+                if not os.path.isdir(target):
+                    os.mkdir(target)
+
+
+                count = 0
+                for file in request.files.getlist('img'):
+                    print(file)
+                    count = count + 1
+                    filename = file.filename
+                    print(filename)
+                    destination = "/".join([target, filename])
+                    print(destination)
+                    file.save(destination)
 
                 conn.commit()
                 c.close()
@@ -151,6 +171,8 @@ def index():
             if sha256_crypt.verify(request.form['password'], data):
                 session['logged_in']  = True
                 session['email'] = request.form['username']
+
+                return render_template("register.html")
 
 
             else:
@@ -272,7 +294,28 @@ def getProgress():
 
     return jsonify(out=out)
 
+@app.route('/upload/', methods=['GET', 'POST'])
+def upload():
+    target = os.path.join(APP_ROOT, 'uploads/')
+    print(target)
+    if not os.path.isdir(target):
+        os.mkdir(target)
 
+    if request.method == 'POST':
+        count = 0
+        for file in request.files.getlist('img'):
+            print(file)
+            count = count + 1
+            # filename = '00' + str(count) + '.png'
+            filename = file.filename
+            print(filename)
+            destination = "/".join([target, filename])
+            print(destination)
+            file.save(destination)
+
+        return "file uploaded"
+
+    return "ooooooppppppssss"
 
 if __name__ == "__main__":
     app.run()
