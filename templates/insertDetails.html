@@ -25,7 +25,6 @@
 	</head>
 
     <body>
-
 <div class="header-cont">
 
     		</div>
@@ -33,11 +32,23 @@
         <div class="container">
 
 			<span id="text-login-msg"></span>
-			<div class="row main">
+
 
 				<div class="main-login main-center">
 
-                   <h2 class="cardHeading">Update today Progress for : <span id="mname"></span></h2>
+					<div class="row main">
+
+				<div class="booth">
+				<video id="video" width="400" height="300" style="margin-left: 100px; margin-top: 30px;"></video>
+				<button id="capture" class="booth-capture-button" onclick="capture()">Authenticate</button>
+				<canvas id='canvas' width="400" height="300"></canvas>
+				<div id="cam-holder" style="height: 30px;">
+
+				</div>
+
+			</div>
+
+                   <h2 class="cardHeading">Update Today Progress for : <span id="mname"></span></h2>
 
 
                     <div class="form-wrap">
@@ -49,7 +60,7 @@
 
                             <div class="col-md-6">
 								<div class="input-group">
-									<span class="input-group-addon"><i class="fa fa-envelope fa" aria-hidden="true"></i></span>
+									<span class="input-group-addon"><i class="fa-id-card fa" aria-hidden="true"></i></span>
 									<input type="text" class="form-control" name="nic" id="nic"  placeholder="nic" value="324324324V" readonly/>
 
 							</div>
@@ -57,7 +68,7 @@
 
                             <div class="col-md-6">
 								<div class="input-group">
-									<span class="input-group-addon"><i class="fa fa-envelope fa" aria-hidden="true"></i></span>
+									<span class="input-group-addon"><i class="fa fa-calendar-alt fa" aria-hidden="true"></i></span>
 									<input type="date" class="form-control" name="doj" id="doj" min="1970-01-01"  value="{{doj}}" readonly />
 								</div>
 							</div>
@@ -65,28 +76,28 @@
 
 							<div class="col-md-6">
 								<div class="input-group">
-									<span class="input-group-addon"><i class="fa fa-envelope fa" aria-hidden="true"></i></span>
+									<span class="input-group-addon"><i class="fa fa-weight fa" aria-hidden="true"></i></span>
 									<input type="text" class="form-control" name="weight" id="weight"  placeholder="Weight"/>
 								</div>
 							</div>
 
 							<div class="col-md-6">
 								<div class="input-group">
-									<span class="input-group-addon"><i class="fa fa-envelope fa" aria-hidden="true"></i></span>
+									<span class="input-group-addon"><i class="fa fa-ruler-vertical fa" aria-hidden="true"></i></span>
 									<input type="text" class="form-control" name="height" id="height"  placeholder="Height"/>
 								</div>
 							</div>
 
 							<div class="col-md-6">
 								<div class="input-group">
-									<span class="input-group-addon"><i class="fa fa-envelope fa" aria-hidden="true"></i></span>
+									<span class="input-group-addon"><i class="fa fa-flask fa" aria-hidden="true"></i></span>
 									<input type="text" class="form-control" name="fat" id="fat"  placeholder="Fat"/>
 								</div>
 							</div>
 
 							<div class="col-md-6">
 								<div class="input-group">
-									<span class="input-group-addon"><i class="fa fa-envelope fa" aria-hidden="true"></i></span>
+									<span class="input-group-addon"><i class="fa fa-tshirt fa" aria-hidden="true"></i></span>
 									<input type="text" class="form-control" name="chest" id="chest"  placeholder="Chest Size"/>
 								</div>
 							</div>
@@ -162,5 +173,70 @@
 <script src="../static/js/drawcharts.js" type="text/javascript"></script>
 
 <script src="../static/js/getData.js" type="text/javascript"></script>
+
+
+<script>
+
+	function b64toBlob(b64Data, contentType, sliceSize) {
+    contentType = contentType || '';
+    sliceSize = sliceSize || 512;
+
+    var byteCharacters = atob(b64Data);
+    var byteArrays = [];
+
+    for (var offset = 0; offset < byteCharacters.length; offset += sliceSize) {
+        var slice = byteCharacters.slice(offset, offset + sliceSize);
+
+        var byteNumbers = new Array(slice.length);
+        for (var i = 0; i < slice.length; i++) {
+            byteNumbers[i] = slice.charCodeAt(i);
+        }
+
+        var byteArray = new Uint8Array(byteNumbers);
+
+        byteArrays.push(byteArray);
+    }
+
+    var blob = new Blob(byteArrays, {type: contentType});
+    return blob;
+}
+
+
+	(function () {
+    console.log('hfiehfieh');
+    var video = document.getElementById('video');
+    var canvas = document.getElementById('canvas');
+    // var photo = document.getElementById('photo');
+    var holder = document.getElementById('cam-holder');
+    context = canvas.getContext('2d');
+
+    if (navigator.mediaDevices.getUserMedia) {
+
+        navigator.mediaDevices.getUserMedia({video: {width: 400, height: 300}, audio: false})
+            .then(function (stream) {
+                video.srcObject = stream;
+                video.play();
+
+            })
+            .catch(function (error) {
+                console.log(error.message);
+            });
+    }
+
+})();
+
+	function capture() {
+	    console.log("in capture image")
+        context.drawImage(video, 0, 0, 800, 600);
+        var imgUrl = canvas.toDataURL('image/png');
+        var block = imgUrl.split(";");
+        var contentType = block[0].split(":")[1];
+        var fileType = contentType.split("/")[1];
+        var realData = block[1].split(",")[1];
+        var blob = b64toBlob(realData, contentType);
+        return blob
+    }
+
+</script>
 
 </html>

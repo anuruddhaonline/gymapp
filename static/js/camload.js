@@ -27,7 +27,6 @@ var blobArray = [];
 
 
 (function () {
-    console.log('hfiehfieh');
     var video = document.getElementById('video');
     var canvas = document.getElementById('canvas');
     // var photo = document.getElementById('photo');
@@ -100,23 +99,22 @@ $("#regform").submit(function (e) {
     }
 
 
+
     $.ajax({
-        url: "http://localhost:5000/dash/",
+        url: "/dash/",
         data: fd,// the formData function is available in almost all new browsers.
         type: "POST",
         contentType: false,
         processData: false,
         cache: false,
-        error: function (err) {
-            console.error(err);
-        },
+
         success: function (data) {
-            alert(data);
+            console.log(data);
+            if (data['value']==true){
+                        location.reload();
+                    }
         },
-        complete: function () {
-            console.log("Request finished.");
-            location.reload();
-        }
+
     });
 
 

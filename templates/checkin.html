@@ -46,12 +46,12 @@
                                 <div id="icon-login-msg" class="glyphicon glyphicon-chevron-right"></div>
                                 <span id="text-login-msg">{{error}}</span>
                             </div>
-				    		<input id="login_nic" name="nic" class="form-control" type="text" placeholder="NIC" value="{{request.form.nic}}" required>
+				    		<input id="login_nic" name="nic" class="form-control" type="text" placeholder="NIC" value="{{request.form.nic}}">
 
         		    	</div>
 				        <div class="modal-footer">
                             <div>
-                                <button type="submit" class="btn btn-primary btn-lg btn-block">Check-In</button>
+                                <button type="submit" onclick="capture()" class="btn btn-primary btn-lg btn-block">Check-In</button>
                             </div>
 				        </div>
                     </form>
@@ -65,6 +65,68 @@
 
     </body>
 
-<script src="{{url_for('static', filename='js/camload.js')}}"></script>
+<script>
+
+	function b64toBlob(b64Data, contentType, sliceSize) {
+    contentType = contentType || '';
+    sliceSize = sliceSize || 512;
+
+    var byteCharacters = atob(b64Data);
+    var byteArrays = [];
+
+    for (var offset = 0; offset < byteCharacters.length; offset += sliceSize) {
+        var slice = byteCharacters.slice(offset, offset + sliceSize);
+
+        var byteNumbers = new Array(slice.length);
+        for (var i = 0; i < slice.length; i++) {
+            byteNumbers[i] = slice.charCodeAt(i);
+        }
+
+        var byteArray = new Uint8Array(byteNumbers);
+
+        byteArrays.push(byteArray);
+    }
+
+    var blob = new Blob(byteArrays, {type: contentType});
+    return blob;
+}
+
+
+	(function () {
+    console.log('hfiehfieh');
+    var video = document.getElementById('video');
+    var canvas = document.getElementById('canvas');
+    // var photo = document.getElementById('photo');
+    var holder = document.getElementById('cam-holder');
+    context = canvas.getContext('2d');
+
+    if (navigator.mediaDevices.getUserMedia) {
+
+        navigator.mediaDevices.getUserMedia({video: {width: 400, height: 300}, audio: false})
+            .then(function (stream) {
+                video.srcObject = stream;
+                video.play();
+
+            })
+            .catch(function (error) {
+                console.log(error.message);
+            });
+    }
+
+})();
+
+	function capture() {
+	    console.log("in capture image")
+        context.drawImage(video, 0, 0, 800, 600);
+        var imgUrl = canvas.toDataURL('image/png');
+        var block = imgUrl.split(";");
+        var contentType = block[0].split(":")[1];
+        var fileType = contentType.split("/")[1];
+        var realData = block[1].split(",")[1];
+        var blob = b64toBlob(realData, contentType);
+        return blob
+    }
+
+</script>
 
 </html>

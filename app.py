@@ -3,7 +3,7 @@ from __future__ import division
 from __future__ import print_function
 
 import os
-from flask import Flask, render_template, flash, request, url_for, redirect, session ,make_response,jsonify
+from flask import Flask, render_template, flash, request, url_for, redirect, session, make_response, jsonify
 from dbcon import Connection
 from passlib.hash import sha256_crypt
 from pymysql import escape_string as es
@@ -12,20 +12,18 @@ import gc
 import time
 import datetime
 
-#FR Libs
+# FR Libs
 from packages.preprocess import preprocesses
 from packages.classifier import training
-
 
 app = Flask(__name__)
 app.secret_key = "super secret key"
 APP_ROOT = os.path.dirname(os.path.abspath(__file__))
-#NN initializations
+# NN initializations
 TRAIN_FOLDER = './uploads/train/'
 PRE_FOLDER = './uploads/pre/'
 CLASSIFIER = './class/classifier.pkl'
 MODEL_DIR = './model'
-
 
 
 @app.route('/train/')
@@ -46,42 +44,54 @@ def init():
     print('Number of successfully aligned images: %d' % nrof_successfully_aligned)
     return 'init align images'
 
+
 @app.route('/dash/', methods=['GET', 'POST'])
 def dash():
+
     error = ''
     try:
         if request.method == "POST":
-            nic = request.form['nic']
-            fname = request.form['fname']
-            lname = request.form['lname']
-            email = request.form['email']
-            mobile = request.form['mobile']
-            dob = request.form['dob']
-            weight = request.form['weight']
-            height = request.form['height']
-            chest = request.form['chest']
-            password = sha256_crypt.encrypt((str(request.form['password'])))
+
+            nic = request.form.get('nic')
+            fname = request.form.get('fname')
+            lname = request.form.get('lname')
+            email = request.form.get('email')
+            mobile = request.form.get('mobile')
+            dob = request.form.get('dob')
+            weight = request.form.get('weight')
+            height = request.form.get('height')
+            chest = request.form.get('chest')
+            password = sha256_crypt.encrypt((str(request.form.get('password'))))
+            print("here")
 
             c, conn = Connection()
 
+
+            print('nic',nic)
+
+
             x = c.execute("SELECT * FROM members WHERE nic = (%s)", (es(nic)))
+
+            print('user x', x)
+
 
             if int(x) > 0:
                 error = "already exists"
-                return render_template("register.html", error = error)
+                return jsonify(error=error)
 
             else:
 
+                c.execute(
+                    "INSERT INTO members (nic, fname, lname, email, mobile, dob, weight, height, chest, password) VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s)",
+                    (es(nic), es(fname), es(lname), es(email), es(mobile), es(dob), es(weight), es(height), es(chest),
+                     es(password)))
 
-                c.execute("INSERT INTO members (nic, fname, lname, email, mobile, dob, weight, height, chest, password) VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s)",(es(nic), es(fname), es(lname), es(email), es(mobile), es(dob), es(weight),es(height), es(chest), es(password)))
+                # saves user images
 
-                #saves user images
-
-                target = os.path.join(APP_ROOT, 'uploads/'+nic)
+                target = os.path.join(APP_ROOT, 'uploads/train/' + nic)
                 print(target)
                 if not os.path.isdir(target):
                     os.mkdir(target)
-
 
                 count = 0
                 for file in request.files.getlist('img'):
@@ -111,26 +121,24 @@ def dash():
                 conn.close()
                 gc.collect()
 
-                return redirect(url_for("dash"))
+
+
+                return jsonify(sucess="Registration success", value=True)
 
         return render_template(render_template("register.html"))
 
     except Exception as e:
-        return(str(e))
+        return str(e)
+
+    return render_template(render_template("register.html"))
 
 
-
-
-    return render_template("register.html")
-
-
-#Checkin
+# Checkin
 
 @app.route('/checkin/')
 def checkin():
-
     error = 'Please place Your face and press checkin'
-    return render_template("checkin.html", error =error)
+    return render_template("checkin.html", error=error)
 
     #
     # email = "324324324V"  # Have to add request from username
@@ -148,7 +156,7 @@ def checkin():
     # else:
 
 
-#Settings
+# Settings
 
 @app.route('/settings/', methods=['GET', 'POST'])
 def settings():
@@ -196,9 +204,7 @@ def settings():
     except Exception as e:
         return (str(e))
 
-
-
-    return render_template("settings.html", error = error)
+    return render_template("settings.html", error=error)
 
 
 # Login
@@ -215,7 +221,7 @@ def index():
             data = c.fetchone()[3]
 
             if sha256_crypt.verify(request.form['password'], data):
-                session['logged_in']  = True
+                session['logged_in'] = True
                 session['email'] = request.form['username']
 
                 return render_template("register.html")
@@ -225,24 +231,18 @@ def index():
                 error = "Invalid Credentials. Try Again!"
                 gc.collect()
 
-                return render_template("index.html", error = error)
+                return render_template("index.html", error=error)
 
-
-
-
-        return render_template("index.html", error = error)
+        return render_template("index.html", error=error)
 
     except Exception as e:
         # flash(e)
         error = "Invalid Credentials. Try Again!"
-        return render_template("index.html", error = error)
+        return render_template("index.html", error=error)
 
 
 @app.route('/getfilldetail', methods=['POST'])
-
 def getfillDetail():
-
-
     # nic = "324324324V" # Test
 
     nic = request.form['nic']
@@ -255,9 +255,7 @@ def getfillDetail():
 
     result = c.fetchall()
 
-
     for row in result:
-
         out.append({'name': row[2], 'lname': row[3]})
 
     conn.commit()
@@ -268,39 +266,33 @@ def getfillDetail():
     return jsonify(out=out)
 
 
-
-@app.route('/filldetail', methods=['GET'])
-
+@app.route('/filldetail/', methods=['GET'])
 def fillDetail():
-
     return render_template("insertDetails.html")
-
 
 
 # Save Member Daily Details
 
 @app.route('/savedetail', methods=['POST'])
-
 def saveDetail():
-
     # return 'Yes'
 
     nic = request.form['nic']
     bodyWeight = request.form['weight']
     bodyHeight = request.form['height']
-    bodyChest  = request.form['chest']
-    bodyFat    = request.form['fat']
+    bodyChest = request.form['chest']
+    bodyFat = request.form['fat']
 
     times = time.time()
     ts = datetime.datetime.fromtimestamp(times).strftime('%Y-%m-%d %H:%M:%S')
 
     sql = "INSERT INTO memberprogress (nic,weight, height, chest ,fat ,updated) VALUES (%s, %s, %s ,%s, %s,%s)"
 
-    val = (nic , bodyWeight ,bodyHeight ,bodyChest,bodyFat ,ts )
+    val = (nic, bodyWeight, bodyHeight, bodyChest, bodyFat, ts)
 
     mysql, conn = Connection()
 
-    mysql.execute(sql,val)
+    mysql.execute(sql, val)
 
     conn.commit()
     mysql.close()
@@ -313,14 +305,12 @@ def saveDetail():
 # Getting Progress Route for Charts
 
 @app.route('/getprogress', methods=['POST'])
-
 def getProgress():
-
-    #nic = "951324844V" #Test
+    # nic = "951324844V" #Test
 
     nic = request.form['nic']
 
-    out =[]
+    out = []
 
     c, conn = Connection()
 
@@ -329,9 +319,7 @@ def getProgress():
     result = c.fetchall()
 
     for row in result:
-
-        out.append({ 'weight' : row[1] , 'height' : row[2] , 'chest' : row[3] , 'fat' : row[4] , 'date' : row[6]})
-
+        out.append({'weight': row[1], 'height': row[2], 'chest': row[3], 'fat': row[4], 'date': row[6]})
 
     conn.commit()
     c.close()
@@ -339,6 +327,7 @@ def getProgress():
     gc.collect()
 
     return jsonify(out=out)
+
 
 @app.route('/upload/', methods=['GET', 'POST'])
 def upload():
@@ -362,6 +351,7 @@ def upload():
         return "file uploaded"
 
     return "ooooooppppppssss"
+
 
 if __name__ == "__main__":
     app.run()
