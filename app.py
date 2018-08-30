@@ -1,3 +1,7 @@
+from __future__ import absolute_import
+from __future__ import division
+from __future__ import print_function
+
 import os
 from flask import Flask, render_template, flash, request, url_for, redirect, session ,make_response,jsonify
 from dbcon import Connection
@@ -8,10 +12,39 @@ import gc
 import time
 import datetime
 
+#FR Libs
+from packages.preprocess import preprocesses
+from packages.classifier import training
+
 
 app = Flask(__name__)
 app.secret_key = "super secret key"
 APP_ROOT = os.path.dirname(os.path.abspath(__file__))
+#NN initializations
+TRAIN_FOLDER = './uploads/train/'
+PRE_FOLDER = './uploads/pre/'
+CLASSIFIER = './class/classifier.pkl'
+MODEL_DIR = './model'
+
+
+
+@app.route('/train/')
+def train():
+    print("Training Start")
+    obj = training(PRE_FOLDER, MODEL_DIR, CLASSIFIER)
+    get_file = obj.main_train()
+    print('Saved classifier model to file "%s"' % get_file)
+    return 'train end'
+
+
+@app.route('/init/')
+def init():
+    obj = preprocesses(TRAIN_FOLDER, PRE_FOLDER)
+    nrof_images_total, nrof_successfully_aligned = obj.collect_data()
+
+    print('Total number of images: %d' % nrof_images_total)
+    print('Number of successfully aligned images: %d' % nrof_successfully_aligned)
+    return 'init align images'
 
 @app.route('/dash/', methods=['GET', 'POST'])
 def dash():
@@ -59,6 +92,19 @@ def dash():
                     destination = "/".join([target, filename])
                     print(destination)
                     file.save(destination)
+
+                # ttt
+                obj = preprocesses(TRAIN_FOLDER, PRE_FOLDER)
+                nrof_images_total, nrof_successfully_aligned = obj.collect_data()
+
+                print('Total number of images: %d' % nrof_images_total)
+                print('Number of successfully aligned images: %d' % nrof_successfully_aligned)
+
+                print("Training Start")
+                obj = training(PRE_FOLDER, MODEL_DIR, CLASSIFIER)
+                get_file = obj.main_train()
+                print('Saved classifier model to file "%s"' % get_file)
+                # tttt
 
                 conn.commit()
                 c.close()
