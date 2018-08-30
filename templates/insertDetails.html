@@ -41,7 +41,7 @@
 				<div class="booth">
 				<video id="video" width="400" height="300" style="margin-left: 100px; margin-top: 30px;"></video>
 				<button id="capture" class="booth-capture-button" onclick="capture()">Authenticate</button>
-				<canvas id='canvas' width="400" height="300"></canvas>
+				<canvas id='canvas' width="800" height="600"></canvas>
 				<div id="cam-holder" style="height: 30px;">
 
 				</div>
@@ -61,7 +61,7 @@
                             <div class="col-md-6">
 								<div class="input-group">
 									<span class="input-group-addon"><i class="fa-id-card fa" aria-hidden="true"></i></span>
-									<input type="text" class="form-control" name="nic" id="nic"  placeholder="nic" value="324324324V" readonly/>
+									<input type="text" class="form-control" name="nic" id="nic"  placeholder="nic" value="" readonly/>
 
 							</div>
 							</div>
@@ -234,8 +234,28 @@
         var fileType = contentType.split("/")[1];
         var realData = block[1].split(",")[1];
         var blob = b64toBlob(realData, contentType);
-        return blob
+
+		var newForm = new FormData();
+        newForm.append("img", blob, 'test.png');
+
+        $.ajax({
+        url: "/authenticateuser/",
+        data: newForm,// the formData function is available in almost all new browsers.
+        type: "POST",
+        contentType: false,
+        processData: false,
+        cache: false,
+
+        success: function (data) {
+            console.log(data);
+            if (data['value']==true){
+                        location.reload();
+                    }
+        },
+
+    });
     }
+
 
 </script>
 
