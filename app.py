@@ -147,6 +147,7 @@ def recognize(filename="img.png"):
                                 if HumanNames[best_class_indices[0]] == H_i:
                                     result_names = HumanNames[best_class_indices[0]]
                                     print("Face Recognized: ", result_names)
+
                                     return str(result_names)
                         else:
                             print('Not Recognized')
@@ -177,8 +178,9 @@ def authenticateUser():
 
     result = recognize(filename)
     os.remove(destination)
+    session['nicrec'] = result
 
-    return 'test'
+    return jsonify(sucess="Registration success", value=True)
 
 
 @app.route('/dash/', methods=['GET', 'POST'])
