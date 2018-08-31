@@ -40,7 +40,7 @@
                 <div id="div-forms">
 
                     <!-- Begin # Login Form -->
-                    <form action="" id="login-form" method="post">
+
 		                <div class="modal-body">
 				    		<div id="div-login-msg">
                                 <div id="icon-login-msg" class="glyphicon glyphicon-chevron-right"></div>
@@ -51,10 +51,10 @@
         		    	</div>
 				        <div class="modal-footer">
                             <div>
-                                <button type="submit" onclick="capture()" class="btn btn-primary btn-lg btn-block">Check-In</button>
+                                <button type="button" id="cap" onclick="capture()" class="btn btn-primary btn-lg btn-block">Check-In</button>
                             </div>
 				        </div>
-                    </form>
+
                     <!-- End # Login Form -->
 
                 </div>
@@ -67,7 +67,17 @@
 
 <script>
 
-	function b64toBlob(b64Data, contentType, sliceSize) {
+
+
+
+
+
+
+</script>
+
+<script>
+
+    	function b64toBlob(b64Data, contentType, sliceSize) {
     contentType = contentType || '';
     sliceSize = sliceSize || 512;
 
@@ -90,7 +100,6 @@
     var blob = new Blob(byteArrays, {type: contentType});
     return blob;
 }
-
 
 	(function () {
     console.log('hfiehfieh');
@@ -115,7 +124,9 @@
 
 })();
 
-	function capture() {
+
+    function capture() {
+
 	    console.log("in capture image")
         context.drawImage(video, 0, 0, 800, 600);
         var imgUrl = canvas.toDataURL('image/png');
@@ -124,8 +135,30 @@
         var fileType = contentType.split("/")[1];
         var realData = block[1].split(",")[1];
         var blob = b64toBlob(realData, contentType);
-        return blob
+
+		var newForm = new FormData();
+        newForm.append("img", blob, 'test.png');
+
+        $.ajax({
+        url: "/authenticateuser/",
+        data: newForm,// the formData function is available in almost all new browsers.
+        type: "POST",
+        contentType: false,
+        processData: false,
+        cache: false,
+
+        success: function (data) {
+            console.log(data);
+            if (data['value']==true){
+                        location.reload();
+                        sessionStorage.removeItem(session['nicrec']);
+                    }
+        },
+
+    });
     }
+
+
 
 </script>
 

@@ -180,6 +180,28 @@ def authenticateUser():
     os.remove(destination)
     session['nicrec'] = result
 
+    if result != None :
+
+        nic = result
+
+        times = time.time()
+        ts = datetime.datetime.fromtimestamp(times).strftime('%Y-%m-%d %H:%M:%S')
+
+        sql = "INSERT INTO attendence (nic,date) VALUES (%s, %s)"
+
+        val = (nic, ts)
+
+        mysql, conn = Connection()
+
+        mysql.execute(sql, val)
+
+        conn.commit()
+        mysql.close()
+        conn.close()
+        gc.collect()
+
+
+
     return jsonify(sucess="Registration success", value=True)
 
 
@@ -571,6 +593,35 @@ def getSession():
 
 
     return auth
+
+
+@app.route('/adddb/', methods=['GET'])
+def addDB():
+
+
+    nic = "4283749823V"
+
+    times = time.time()
+    ts = datetime.datetime.fromtimestamp(times).strftime('%Y-%m-%d %H:%M:%S')
+
+    sql = "INSERT INTO attendence (nic,date) VALUES (%s, %s)"
+
+    val = (nic, ts)
+
+    mysql, conn = Connection()
+
+    mysql.execute(sql, val)
+
+    conn.commit()
+    mysql.close()
+    conn.close()
+    gc.collect()
+
+
+    return "ok"
+
+
+
 
 
 
