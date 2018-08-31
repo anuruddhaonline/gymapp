@@ -16,6 +16,30 @@
         <link href="{{ url_for('static', filename='css/style.css')}}" rel="stylesheet">
         <script src="{{url_for('static', filename='js/test.js')}}"></script>
 
+        <style>
+
+            body{
+
+                    background-color: #90acb1;
+            }
+
+            button{
+
+                    padding: 20px!important;
+                    border-radius: 20px!important;
+                    color: #ffffff!important;
+                    text-decoration: none;
+                    background-color: #0c5460!important;
+                    box-shadow: 0px 5px #03333c!important;
+            }
+
+            input{
+
+                margin-top: 10px;
+            }
+
+        </style>
+
 
     </head>
 
@@ -50,7 +74,6 @@
                                 <span id="text-register-msg">{{error}}</span>
                             </div>
 		    				<input id="register_username" class="form-control" type="text" name="name" placeholder="Name" required>
-
                             <input id="register_email" class="form-control" type="text" name="email" placeholder="E-Mail" required>
                             <input id="register_password" class="form-control" name="password" type="password" placeholder="Password" required>
                             <input id="register_password_con" class="form-control" name="password_con" type="password" placeholder="Confirm Password" required>

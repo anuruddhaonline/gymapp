@@ -90,7 +90,7 @@
 
 							<div class="col-md-6">
 								<div class="input-group">
-									<span class="input-group-addon"><i class="fa fa-flask fa" aria-hidden="true"></i></span>
+									<span class="input-group-addon"><i class="fa fa-accessible-icon" aria-hidden="true"></i></span>
 									<input type="text" class="form-control" name="fat" id="fat"  placeholder="Fat"/>
 								</div>
 							</div>
@@ -250,7 +250,7 @@
             console.log(data);
             if (data['value']==true){
                         location.reload();
-                        sessionStorage.removeItem('nicrec');
+                        sessionStorage.removeItem(session['nicrec']-);
                     }
         },
 

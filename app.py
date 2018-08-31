@@ -186,97 +186,111 @@ def authenticateUser():
 @app.route('/dash/', methods=['GET', 'POST'])
 def dash():
 
-    error = ''
-    try:
-        if request.method == "POST":
+    if 'auth' in session:
 
-            nic = request.form.get('nic')
-            fname = request.form.get('fname')
-            lname = request.form.get('lname')
-            email = request.form.get('email')
-            mobile = request.form.get('mobile')
-            dob = request.form.get('dob')
-            weight = request.form.get('weight')
-            height = request.form.get('height')
-            chest = request.form.get('chest')
-            password = sha256_crypt.encrypt((str(request.form.get('password'))))
-            print("here")
+        error = ''
+        try:
+            if request.method == "POST":
 
-            c, conn = Connection()
+                nic = request.form.get('nic')
+                fname = request.form.get('fname')
+                lname = request.form.get('lname')
+                email = request.form.get('email')
+                mobile = request.form.get('mobile')
+                dob = request.form.get('dob')
+                weight = request.form.get('weight')
+                height = request.form.get('height')
+                chest = request.form.get('chest')
+                password = sha256_crypt.encrypt((str(request.form.get('password'))))
+                print("here")
 
-
-            print('nic',nic)
-
-
-            x = c.execute("SELECT * FROM members WHERE nic = (%s)", (es(nic)))
-
-            print('user x', x)
+                c, conn = Connection()
 
 
-            if int(x) > 0:
-                error = "already exists"
-                return jsonify(error=error)
-
-            else:
-
-                c.execute(
-                    "INSERT INTO members (nic, fname, lname, email, mobile, dob, weight, height, chest, password) VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s)",
-                    (es(nic), es(fname), es(lname), es(email), es(mobile), es(dob), es(weight), es(height), es(chest),
-                     es(password)))
-
-                # saves user images
-
-                target = os.path.join(APP_ROOT, 'uploads/train/' + nic)
-                print(target)
-                if not os.path.isdir(target):
-                    os.mkdir(target)
-
-                count = 0
-                for file in request.files.getlist('img'):
-                    print(file)
-                    count = count + 1
-                    filename = file.filename
-                    print(filename)
-                    destination = "/".join([target, filename])
-                    print(destination)
-                    file.save(destination)
-
-                # ttt
-                obj = preprocesses(TRAIN_FOLDER, PRE_FOLDER)
-                nrof_images_total, nrof_successfully_aligned = obj.collect_data()
-
-                print('Total number of images: %d' % nrof_images_total)
-                print('Number of successfully aligned images: %d' % nrof_successfully_aligned)
-
-                print("Training Start")
-                obj = training(PRE_FOLDER, MODEL_DIR, CLASSIFIER)
-                get_file = obj.main_train()
-                print('Saved classifier model to file "%s"' % get_file)
-                # tttt
-
-                conn.commit()
-                c.close()
-                conn.close()
-                gc.collect()
+                print('nic',nic)
 
 
+                x = c.execute("SELECT * FROM members WHERE nic = (%s)", (es(nic)))
 
-                return jsonify(sucess="Registration success", value=True)
+                print('user x', x)
+
+
+                if int(x) > 0:
+                    error = "already exists"
+                    return jsonify(error=error)
+
+                else:
+
+                    c.execute(
+                        "INSERT INTO members (nic, fname, lname, email, mobile, dob, weight, height, chest, password) VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s)",
+                        (es(nic), es(fname), es(lname), es(email), es(mobile), es(dob), es(weight), es(height), es(chest),
+                         es(password)))
+
+                    # saves user images
+
+                    target = os.path.join(APP_ROOT, 'uploads/train/' + nic)
+                    print(target)
+                    if not os.path.isdir(target):
+                        os.mkdir(target)
+
+                    count = 0
+                    for file in request.files.getlist('img'):
+                        print(file)
+                        count = count + 1
+                        filename = file.filename
+                        print(filename)
+                        destination = "/".join([target, filename])
+                        print(destination)
+                        file.save(destination)
+
+                    # ttt
+                    obj = preprocesses(TRAIN_FOLDER, PRE_FOLDER)
+                    nrof_images_total, nrof_successfully_aligned = obj.collect_data()
+
+                    print('Total number of images: %d' % nrof_images_total)
+                    print('Number of successfully aligned images: %d' % nrof_successfully_aligned)
+
+                    print("Training Start")
+                    obj = training(PRE_FOLDER, MODEL_DIR, CLASSIFIER)
+                    get_file = obj.main_train()
+                    print('Saved classifier model to file "%s"' % get_file)
+                    # tttt
+
+                    conn.commit()
+                    c.close()
+                    conn.close()
+                    gc.collect()
+
+
+
+                    return jsonify(sucess="Registration success", value=True)
+
+            return render_template(render_template("register.html"))
+
+        except Exception as e:
+            return str(e)
 
         return render_template(render_template("register.html"))
 
-    except Exception as e:
-        return str(e)
+    else:
 
-    return render_template(render_template("register.html"))
+        return redirect(url_for("index"))
 
 
 # Checkin
 
 @app.route('/checkin/')
 def checkin():
-    error = 'Please place Your face and press checkin'
-    return render_template("checkin.html", error=error)
+
+    if 'auth' in session:
+
+        error = 'Please place Your face and press checkin'
+        return render_template("checkin.html", error=error)
+
+    else:
+
+        return redirect(url_for("index"))
+
 
     #
     # email = "324324324V"  # Have to add request from username
@@ -298,85 +312,99 @@ def checkin():
 
 @app.route('/settings/', methods=['GET', 'POST'])
 def settings():
-    error = 'Create a New Admin Account'
-    try:
-        if request.method == "POST":
-            fname = request.form['name']
-            email = request.form['email']
-            password = request.form['password']
-            password_con = request.form['password_con']
 
-            c, conn = Connection()
+    if 'auth' in session:
 
-            x = c.execute("SELECT * FROM users WHERE email = (%s)", (es(email)))
+        error = 'Create a New Admin Account'
+        try:
+            if request.method == "POST":
+                fname = request.form['name']
+                email = request.form['email']
+                password = request.form['password']
+                password_con = request.form['password_con']
 
-            if password != password_con:
-                error = "Passwords don't Match"
-                return render_template("settings.html", error=error)
+                c, conn = Connection()
 
-            else:
+                x = c.execute("SELECT * FROM users WHERE email = (%s)", (es(email)))
 
-                if int(x) > 0:
-                    error = "Email Already Exists"
-
-                    return render_template("setttings.html", error=error)
-
+                if password != password_con:
+                    error = "Passwords don't Match"
+                    return render_template("settings.html", error=error)
 
                 else:
 
-                    password = sha256_crypt.encrypt(password)
+                    if int(x) > 0:
+                        error = "Email Already Exists"
 
-                    c.execute(
-                        "INSERT INTO users (fname, email, password) VALUES (%s, %s, %s)",
-                        (es(fname), es(email), es(password)))
+                        return render_template("setttings.html", error=error)
 
-                    conn.commit()
-                    c.close()
-                    conn.close()
-                    gc.collect()
 
-                    return redirect(url_for("settings"))
+                    else:
 
-        return render_template(render_template("settings.html", error=error))
+                        password = sha256_crypt.encrypt(password)
 
-    except Exception as e:
-        return (str(e))
+                        c.execute(
+                            "INSERT INTO users (fname, email, password) VALUES (%s, %s, %s)",
+                            (es(fname), es(email), es(password)))
 
-    return render_template("settings.html", error=error)
+                        conn.commit()
+                        c.close()
+                        conn.close()
+                        gc.collect()
+
+                        return redirect(url_for("settings"))
+
+            return render_template(render_template("settings.html", error=error))
+
+        except Exception as e:
+            return (str(e))
+
+        return render_template("settings.html", error=error)
+
+    else:
+
+        return redirect(url_for("index"))
 
 
 # Login
 
 @app.route('/', methods=['GET', 'POST'])
 def index():
-    error = 'Type your Username and Password.'
-    try:
-        c, conn = Connection()
-        if request.method == "POST":
+    if 'auth' in session:
 
-            data = c.execute("SELECT * FROM users WHERE email = (%s)", es(request.form['username']))
+        return render_template("register.html")
 
-            data = c.fetchone()[3]
+    else:
+        error = 'Type your Username and Password.'
+        try:
+            c, conn = Connection()
+            if request.method == "POST":
 
-            if sha256_crypt.verify(request.form['password'], data):
-                session['logged_in'] = True
-                session['email'] = request.form['username']
+                data = c.execute("SELECT * FROM users WHERE email = (%s)", es(request.form['username']))
 
-                return render_template("register.html")
+                data = c.fetchone()[3]
+
+                if sha256_crypt.verify(request.form['password'], data):
+                    session['logged_in'] = True
+                    session['email'] = request.form['username']
+
+                    session['auth'] = "true"
+
+                    return render_template("register.html")
 
 
-            else:
-                error = "Invalid Credentials. Try Again!"
-                gc.collect()
+                else:
+                    error = "Invalid Credentials. Try Again!"
+                    gc.collect()
 
-                return render_template("index.html", error=error)
+                    return render_template("index.html", error=error)
 
-        return render_template("index.html", error=error)
+            return render_template("index.html", error=error)
 
-    except Exception as e:
-        # flash(e)
-        error = "Invalid Credentials. Try Again!"
-        return render_template("index.html", error=error)
+        except Exception as e:
+            # flash(e)
+            error = "Invalid Credentials. Try Again!"
+            return render_template("index.html", error=error)
 
 
 @app.route('/getfilldetail', methods=['POST'])
@@ -406,7 +434,16 @@ def getfillDetail():
 
 @app.route('/filldetail/', methods=['GET'])
 def fillDetail():
-    return render_template("insertDetails.html")
+    if 'auth' in session:
+
+        auth = session['auth']
+
+        return render_template("insertDetails.html")
+
+    else:
+
+        return redirect(url_for("index"))
+
 
 
 # Save Member Daily Details
@@ -489,6 +526,53 @@ def upload():
         return "file uploaded"
 
     return "ooooooppppppssss"
+
+
+# Session Logout
+
+
+@app.route('/logout/', methods=['GET'])
+def logout():
+
+    if 'auth' in session:
+
+        auth = "Clear"
+
+        session.clear()
+
+    else:
+
+        auth = "No Clear"
+
+    return redirect(url_for("index"))
+
+
+
+# Session Login Tests
+
+
+@app.route('/addN/', methods=['GET'])
+def addSession():
+
+     session['auth'] = "true"
+     return "Okkkkk"
+
+
+@app.route('/checkN/', methods=['GET'])
+def getSession():
+
+    if 'auth' in session:
+
+        auth = session['auth']
+
+    else:
+
+        auth = "false"
+
+
+    return auth
+
+
 
 
 if __name__ == "__main__":
