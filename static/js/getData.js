@@ -20,11 +20,14 @@
 
         console.log(data);
 
+
+
      });
 
      getUserData();
 
      chart();
+
 
     });
 

@@ -27,7 +27,7 @@
 
     <body>
 
-<div class="header-cont">
+	<div class="header-cont">
 
         <div class="header-wrap">
             <a href="/dash/">Register</a>
@@ -69,7 +69,7 @@
 							<div class="col-md-6">
 								<div class="input-group">
 									<span class="input-group-addon"><i class="far fa-id-card fa" aria-hidden="true"></i></span>
-									<input type="text" maxlength="10"  class="form-control" name="nic" id="nic"  placeholder="NIC" />
+									<input type="text" maxlength="10"  class="form-control" name="nic" id="nic"  placeholder="NIC" required/>
 								</div>
 							</div>
 
@@ -77,30 +77,30 @@
 							<div class="col-md-6">
 								<div class="input-group">
 									<span class="input-group-addon"><i class="fa fa-user fa" aria-hidden="true"></i></span>
-									<input type="text" class="form-control" name="fname" id="fname"  placeholder="First Name" />
+									<input type="text" class="form-control" name="fname" id="fname"  placeholder="First Name" required/>
 								</div>
 							</div>
 
 							<div class="col-md-6">
 								<div class="input-group">
 									<span class="input-group-addon"><i class="fa fa-user fa" aria-hidden="true"></i></span>
-									<input type="text" class="form-control" name="lname" id="lname"  placeholder="Last Name" />
+									<input type="text" class="form-control" name="lname" id="lname"  placeholder="Last Name" required/>
 								</div>
 							</div>
 
-							<!--pattern="^[_A-z0-9]{1,}$" maxlength="15" -->
+							<!--pattern="[^@]+@[^@]+\.[a-zA-Z]{2,6}" maxlength="15" -->
 
 							<div class="col-md-6">
 								<div class="input-group">
 									<span class="input-group-addon"><i class="fa fa-envelope fa" aria-hidden="true"></i></span>
-									<input type="email" class="form-control" name="email" id="email"  placeholder="Email" />
+									<input type="email" class="form-control" name="email" id="email"  placeholder="Email" required pattern="[^@]+@[^@]+\.[a-zA-Z]{2,6}"/>
 								</div>
 							</div>
 
 							<div class="col-md-6">
 								<div class="input-group">
 									<span class="input-group-addon"><i class="fa fa-phone fa" aria-hidden="true"></i></span>
-									<input type="number" maxlength="10"  class="form-control" name="mobile" id="mobile"  placeholder="Mobile Number" />
+									<input type="number" maxlength="10"  class="form-control" name="mobile" id="mobile"  placeholder="Mobile Number" required maxlength="10" pattern="[0-9]{1,5}"/>
 								</div>
 							</div>
 
@@ -114,49 +114,49 @@
 							<div class="col-md-6">
 								<div class="input-group">
 									<span class="input-group-addon"><i class="fa fa-weight fa" aria-hidden="true"></i></span>
-									<input type="number" class="form-control" name="weight" id="weight"  placeholder="Weight" />
+									<input type="number" class="form-control" name="weight" id="weight"  placeholder="Weight" required/>
 								</div>
 							</div>
 
 							<div class="col-md-6">
 								<div class="input-group">
 									<span class="input-group-addon"><i class="fa fa-ruler-vertical fa" aria-hidden="true"></i></span>
-									<input type="number" class="form-control" name="height" id="height"  placeholder="Height" />
+									<input type="number" class="form-control" name="height" id="height"  placeholder="Height" required/>
 								</div>
 							</div>
 
 							<div class="col-md-6">
 								<div class="input-group">
 									<span class="input-group-addon"><i class="fa fa-flask fa" aria-hidden="true"></i></span>
-									<input type="number" class="form-control" name="fat" id="fat"  placeholder="Fat" />
+									<input type="number" class="form-control" name="fat" id="fat"  placeholder="Fat" required/>
 								</div>
 							</div>
 
 							<div class="col-md-6">
 								<div class="input-group">
 									<span class="input-group-addon"><i class="fa fa-tshirt fa" aria-hidden="true"></i></span>
-									<input type="number" class="form-control" name="chest" id="chest"  placeholder="Chest Size" />
+									<input type="number" class="form-control" name="chest" id="chest"  placeholder="Chest Size" required/>
 								</div>
 							</div>
 
 
 
-							<div class="col-md-6">
-								<div class="input-group">
-									<span class="input-group-addon"><i class="fa fa-lock fa-lg" aria-hidden="true"></i></span>
-									<input type="password" class="form-control" name="password" id="password"  placeholder="Password" />
-								</div>
-							</div>
+							<!--<div class="col-md-6">-->
+								<!--<div class="input-group">-->
+									<!--<span class="input-group-addon"><i class="fa fa-lock fa-lg" aria-hidden="true"></i></span>-->
+									<!--<input type="password" class="form-control" name="password" id="password"  placeholder="Password" />-->
+								<!--</div>-->
+							<!--</div>-->
 
 
 
 
-							<div class="col-md-6">
-								<div class="input-group">
-									<span class="input-group-addon"><i class="fa fa-check-square fa-lg" aria-hidden="true"></i></span>
-									<input type="password" class="form-control" name="confirm" id="confirm"  placeholder="Confirm Password" />
-								</div>
-							</div>
+							<!--<div class="col-md-6">-->
+								<!--<div class="input-group">-->
+									<!--<span class="input-group-addon"><i class="fa fa-check-square fa-lg" aria-hidden="true"></i></span>-->
+									<!--<input type="password" class="form-control" name="confirm" id="confirm"  placeholder="Confirm Password" />-->
+								<!--</div>-->
+							<!--</div>-->
 
 
                         </div>

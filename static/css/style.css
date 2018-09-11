@@ -232,3 +232,18 @@ canvas{
     margin-top: 25px;
     margin-bottom: 60px;
 }
+
+
+.modal-header{
+
+	background-color: #ff0052;
+    color: white;
+    font-weight: 600;
+
+}
+
+
+.modal-title{
+
+	font-weight: 600;
+}

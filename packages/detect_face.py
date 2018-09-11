@@ -1,27 +1,3 @@
-""" Tensorflow implementation of the face detection / alignment algorithm found at
-https://github.com/kpzhang93/MTCNN_face_detection_alignment
-"""
-# MIT License
-# 
-# Copyright (c) 2016 David Sandberg
-# 
-# Permission is hereby granted, free of charge, to any person obtaining a copy
-# of this software and associated documentation files (the "Software"), to deal
-# in the Software without restriction, including without limitation the rights
-# to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
-# copies of the Software, and to permit persons to whom the Software is
-# furnished to do so, subject to the following conditions:
-# 
-# The above copyright notice and this permission notice shall be included in all
-# copies or substantial portions of the Software.
-# 
-# THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
-# IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
-# FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
-# AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
-# LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
-# OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
-# SOFTWARE.
 
 from __future__ import absolute_import
 from __future__ import division
@@ -298,7 +274,6 @@ def create_mtcnn(sess, model_path):
 def detect_face(img, minsize, pnet, rnet, onet, threshold, factor):
     # im: input image
     # minsize: minimum of faces' size
-    # pnet, rnet, onet: caffemodel
     # threshold: threshold=[th1 th2 th3], th1-3 are three steps's threshold
     # fastresize: resize img from last scale (using in high-resolution images) if fastresize==true
     factor_count=0
@@ -316,7 +291,7 @@ def detect_face(img, minsize, pnet, rnet, onet, threshold, factor):
         minl = minl*factor
         factor_count += 1
 
-    # first stage
+    # first stage of p-net
     for j in range(len(scales)):
         scale=scales[j]
         hs=int(np.ceil(h*scale))
@@ -354,7 +329,7 @@ def detect_face(img, minsize, pnet, rnet, onet, threshold, factor):
 
     numbox = total_boxes.shape[0]
     if numbox>0:
-        # second stage
+        # second stage of r net
         tempimg = np.zeros((24,24,3,numbox))
         for k in range(0,numbox):
             tmp = np.zeros((int(tmph[k]),int(tmpw[k]),3))

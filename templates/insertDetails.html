@@ -120,7 +120,7 @@
 
                             <div class="col-md-4">
 
-							<button id="backbtn" type="button" class="btn btn-primary btn-lg btn-block login-button">Back</button>
+							<a id="backbtn" href="/dash/" type="button" class="btn btn-primary btn-lg btn-block login-button">Back</a>
 
                                 </div>
 
@@ -164,6 +164,26 @@
 				</div>
 			</div>
 		</div>
+
+	<div id="myModal" class="modal fade modal-danger" role="dialog">
+		<div class="modal-dialog">
+
+			<!-- Modal content-->
+			<div class="modal-content">
+				<div class="modal-header">
+					<button type="button" class="close" data-dismiss="modal">&times;</button>
+					<h4 class="modal-title">Something went Wrong !!!!</h4>
+				</div>
+				<div class="modal-body">
+					<p>Coundn't Recognize the Member!!!</p>
+				</div>
+				<div class="modal-footer">
+					<button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+				</div>
+			</div>
+
+		</div>
+	</div>
 
         </body>
 
@@ -226,7 +246,8 @@
 })();
 
 	function capture() {
-	    console.log("in capture image")
+
+		console.log("in capture image")
         context.drawImage(video, 0, 0, 800, 600);
         var imgUrl = canvas.toDataURL('image/png');
         var block = imgUrl.split(";");
@@ -247,15 +268,38 @@
         cache: false,
 
         success: function (data) {
-            console.log(data);
+
             if (data['value']==true){
-                        location.reload();
-                        sessionStorage.removeItem(session['nicrec']-);
-                    }
+
+                console.log('inside the true dd');
+
+                location.reload();
+                sessionStorage.clear();
+
+			}else{
+
+                console.log('FFF');
+                console.log(data['value'])
+
+				$('#myModal').modal('show');
+
+			}
         },
 
     });
     }
+
+    $('#clrbtn').click(function () {
+
+        $nic = $('#nic').val('');
+        $bw = $('#weight').val('');
+        $bh = $('#height').val('');
+        $bc = $('#chest').val('');
+        $bf = $('#fat').val('');
+
+
+
+    });
 
 
 </script>

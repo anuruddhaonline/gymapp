@@ -63,7 +63,7 @@ def recognize(filename="img.png"):
             pnet, rnet, onet = detect_face.create_mtcnn(sess, npy)
 
             minsize = 20  # minimum size of face
-            threshold = [0.6, 0.6, 0.6]  # three steps's threshold
+            threshold = [0.7, 0.7, 0.7]  # three steps's threshold
             factor = 0.709  # scale factor
             frame_interval = 3
             image_size = 182
@@ -139,7 +139,7 @@ def recognize(filename="img.png"):
                         best_class_probabilities = predictions[np.arange(len(best_class_indices)), best_class_indices]
                         print("Best Predictions ", best_class_probabilities)
 
-                        if best_class_probabilities[0] > 0.6:
+                        if best_class_probabilities[0] > 0.3:
                             print('Result Indices: ', best_class_indices[0])
                             print(HumanNames)
                             for H_i in HumanNames:
@@ -169,7 +169,7 @@ def authenticateUser():
     if not os.path.isdir(target):
         os.mkdir(target)
 
-    filename = random_name() + ".png"
+    filename = str(os.urandom(5).hex()) + ".png"
     destination = "/".join([target, filename])
 
     for file in request.files.getlist('img'):
@@ -223,7 +223,6 @@ def dash():
                 weight = request.form.get('weight')
                 height = request.form.get('height')
                 chest = request.form.get('chest')
-                password = sha256_crypt.encrypt((str(request.form.get('password'))))
                 print("here")
 
                 c, conn = Connection()
@@ -244,9 +243,8 @@ def dash():
                 else:
 
                     c.execute(
-                        "INSERT INTO members (nic, fname, lname, email, mobile, dob, weight, height, chest, password) VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s)",
-                        (es(nic), es(fname), es(lname), es(email), es(mobile), es(dob), es(weight), es(height), es(chest),
-                         es(password)))
+                        "INSERT INTO members (nic, fname, lname, email, mobile, dob, weight, height, chest) VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s)",
+                        (es(nic), es(fname), es(lname), es(email), es(mobile), es(dob), es(weight), es(height), es(chest)))
 
                     # saves user images
 
@@ -621,10 +619,75 @@ def addDB():
     return "ok"
 
 
+@app.route('/attendance/', methods=['GET'])
+def attendence():
+
+    sql = "SELECT * FROM attendence"
+
+    mysql, conn = Connection()
+
+    mysql.execute(sql)
+
+    result = mysql.fetchall()
+
+    conn.commit()
+    mysql.close()
+    conn.close()
+    gc.collect()
+
+    #return result
+
+    #return jsonify(result)
 
 
 
 
+    # if 'auth' in session:
+    #
+    #     auth = session['auth']
+
+    return render_template("attendence.html" , data=result)
+    #
+    # else:
+    #
+    #     return redirect(url_for("index"))
+
+
+@app.route('/attendancenic/', methods=['POST'])
+def attendencenic():
+
+    #nic = request.form['nic']
+
+    nic = "1231231"
+
+    times = time.time()
+    ts = datetime.datetime.fromtimestamp(times).strftime('%Y-%m-%d %H:%M:%S')
+
+    sql = "INSERT INTO attendence (nic,date) VALUES (%s, %s)"
+
+    val = (nic, ts)
+
+    mysql, conn = Connection()
+
+    mysql.execute(sql, val)
+
+    conn.commit()
+    mysql.close()
+    conn.close()
+    gc.collect()
+
+    return jsonify(sucess="Registration success")
+
+# @app.route('/train2/', methods=['POST'])
+#     def train2():
+#
+#     return "test"
+#
+#
+# @app.route('/reco2/', methods=['POST'])
+#     def reco2():
+#
+#     return "tests"
 
 if __name__ == "__main__":
     app.run()

@@ -127,35 +127,53 @@
 
     function capture() {
 
-	    console.log("in capture image")
-        context.drawImage(video, 0, 0, 800, 600);
-        var imgUrl = canvas.toDataURL('image/png');
-        var block = imgUrl.split(";");
-        var contentType = block[0].split(":")[1];
-        var fileType = contentType.split("/")[1];
-        var realData = block[1].split(",")[1];
-        var blob = b64toBlob(realData, contentType);
+        if($('#login_nic').val()!=''){
 
-		var newForm = new FormData();
-        newForm.append("img", blob, 'test.png');
+              console.log('here');
 
-        $.ajax({
-        url: "/authenticateuser/",
-        data: newForm,// the formData function is available in almost all new browsers.
-        type: "POST",
-        contentType: false,
-        processData: false,
-        cache: false,
+        $nic = $('#login_nic').val();
 
-        success: function (data) {
-            console.log(data);
-            if (data['value']==true){
-                        location.reload();
-                        sessionStorage.removeItem(session['nicrec']);
-                    }
-        },
 
-    });
+        $.post("/attendancenic/" , {nic : $nic} , function (data) {
+
+        console.log(data);
+
+        });
+
+
+        }else {
+
+                console.log("in capture image")
+                context.drawImage(video, 0, 0, 800, 600);
+                var imgUrl = canvas.toDataURL('image/png');
+                var block = imgUrl.split(";");
+                var contentType = block[0].split(":")[1];
+                var fileType = contentType.split("/")[1];
+                var realData = block[1].split(",")[1];
+                var blob = b64toBlob(realData, contentType);
+
+            	var newForm = new FormData();
+                newForm.append("img", blob, 'test.png');
+
+                $.ajax({
+                url: "/authenticateuser/",
+                data: newForm,// the formData function is available in almost all new browsers.
+                type: "POST",
+                contentType: false,
+                processData: false,
+                cache: false,
+
+                success: function (data) {
+                    console.log(data);
+                    if (data['value']==true){
+                                location.reload();
+                                sessionStorage.removeItem(session['nicrec']);
+                            }
+                },
+
+            });
+
+        }
     }
 
 
